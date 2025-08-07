@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ObsiTool - 画像検索</title>
+    <style>
+    img {
+        max-width: 200px;
+        max-height: 200px;
+        margin: 8px;
+    }
+    .note-block {
+        margin-bottom: 24px;
+    }
+    </style>
+</head>
+<body>
+    <h1>画像検索</h1>
+    <form method="get" action="{% url 'search' %}">
+        <input type="text" name="q" placeholder="検索ワード" value="{{ query }}">
+
+        <label>
+            <input type="radio" name="mode" value="title" {% if mode == 'title' %}checked{% endif %}>
+            タイトルで検索
+        </label>
+        <label>
+            <input type="radio" name="mode" value="tag" {% if mode == 'tag' %}checked{% endif %}>
+            タグで検索
+        </label>
+
+        <button type="submit">検索</button>
+    </form>
+
+
+    <hr>
+
+    {% if results %}
+    <h2>画像一覧（{{ results|length }}件）</h2>
+    {% for note in results %}
+    <div class="note-block">
+        <p><strong>{{ note.filename }}</strong></p>
+        {% for img_url in note.image_urls %}
+        <img src="{{ img_url }}" alt="画像">
+        {% empty %}
+        <p>画像がありません。</p>
+        {% endfor %}
+    </div>
+    {% endfor %}
+    {% else %}
+    {% if query %}
+    <p>該当する画像はありません。</p>
+    {% endif %}
+    {% endif %}
+</body>
+</html>
