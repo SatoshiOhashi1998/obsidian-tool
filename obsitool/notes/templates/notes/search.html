@@ -1,209 +1,539 @@
 <!DOCTYPE html>
+
 <html>
+
 <head>
+
     <title>ObsiTool - 画像検索</title>
+
     <style>
-        /* ページ全体のスタイル */
-        body {
-            max-width: 960px;
-            margin: 20px auto;
-            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-            background-color: #f7f9fc;
-            color: #333;
-            line-height: 1.5;
-            padding: 0 15px;
-        }
-        h1 {
-            text-align: center;
-            margin-bottom: 30px;
-            color: #2c3e50;
-        }
-        /* フォーム */
-        form {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 30px;
-        }
-        input[type="text"] {
-            flex: 1 1 300px;
-            padding: 10px 12px;
-            font-size: 16px;
-            border: 2px solid #ccc;
-            border-radius: 6px;
-            transition: border-color 0.3s ease;
-        }
-        input[type="text"]:focus {
-            border-color: #2980b9;
-            outline: none;
-        }
-        label {
-            font-size: 15px;
-            color: #555;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            cursor: pointer;
-        }
-        input[type="radio"] {
-            cursor: pointer;
-        }
-        button[type="submit"] {
-            background-color: #2980b9;
-            color: white;
-            padding: 10px 20px;
-            font-size: 16px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            box-shadow: 0 3px 8px rgba(41,128,185,0.4);
-            transition: background-color 0.3s ease;
-        }
-        button[type="submit"]:hover {
-            background-color: #1c5d8a;
-        }
-        hr {
-            border: none;
-            border-top: 1px solid #ddd;
-            margin: 30px 0;
-        }
-        /* 検索結果 */
-        h2 {
-            margin-bottom: 20px;
-            color: #34495e;
-            border-bottom: 2px solid #2980b9;
-            padding-bottom: 6px;
-            font-weight: 600;
-        }
-        .note-block {
-            margin-bottom: 40px;
-        }
-        .note-block > p {
-            font-weight: 600;
-            margin-bottom: 12px;
-            color: #2c3e50;
-            font-size: 16px;
-        }
-        /* 画像一覧をグリッド表示 */
-        .images-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-            gap: 16px;
-        }
-        .image-wrapper {
-            text-align: center;
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
-            padding: 12px 8px 16px;
-            transition: box-shadow 0.3s ease;
-        }
-        .image-wrapper:hover {
-            box-shadow: 0 8px 18px rgba(0,0,0,0.18);
-        }
-        .image-wrapper img {
-            max-width: 100%;
-            max-height: 180px;
-            border-radius: 8px;
-            object-fit: cover;
-            margin-bottom: 10px;
-            cursor: pointer;
-            transition: transform 0.3s ease;
-        }
-        .image-wrapper img:hover {
-            transform: scale(1.05);
-            box-shadow: 0 6px 14px rgba(0,0,0,0.25);
-        }
-        .download-btn {
-            display: inline-block;
-            padding: 7px 18px;
-            font-size: 14px;
-            background-color: #2980b9;
-            color: white;
-            border-radius: 6px;
-            text-decoration: none;
-            box-shadow: 0 3px 7px rgba(41, 128, 185, 0.5);
-            border: none;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-        .download-btn:hover {
-            background-color: #1c5d8a;
-        }
-        /* メッセージ */
-        p.no-results {
-            font-size: 16px;
-            text-align: center;
-            color: #999;
-            margin-top: 40px;
-        }
+
+    /* ページ全体のスタイル */
+
+    body {
+
+        max-width: 960px;
+
+        margin: 20px auto;
+
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+        background-color: #f7f9fc;
+
+        color: #333;
+
+        line-height: 1.5;
+
+        padding: 0 15px;
+
+    }
+
+    h1 {
+
+        text-align: center;
+
+        margin-bottom: 30px;
+
+        color: #2c3e50;
+
+    }
+
+    /* フォーム */
+
+    form {
+
+        display: flex;
+
+        flex-wrap: wrap;
+
+        justify-content: center;
+
+        gap: 15px;
+
+        margin-bottom: 30px;
+
+    }
+
+    input[type="text"] {
+
+        flex: 1 1 300px;
+
+        padding: 10px 12px;
+
+        font-size: 16px;
+
+        border: 2px solid #ccc;
+
+        border-radius: 6px;
+
+        transition: border-color 0.3s ease;
+
+    }
+
+    input[type="text"]:focus {
+
+        border-color: #2980b9;
+
+        outline: none;
+
+    }
+
+    label {
+
+        font-size: 15px;
+
+        color: #555;
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 6px;
+
+        cursor: pointer;
+
+    }
+
+    input[type="radio"] {
+
+        cursor: pointer;
+
+    }
+
+    button[type="submit"] {
+
+        background-color: #2980b9;
+
+        color: white;
+
+        padding: 10px 20px;
+
+        font-size: 16px;
+
+        border: none;
+
+        border-radius: 6px;
+
+        cursor: pointer;
+
+        box-shadow: 0 3px 8px rgba(41,128,185,0.4);
+
+        transition: background-color 0.3s ease;
+
+    }
+
+    button[type="submit"]:hover {
+
+        background-color: #1c5d8a;
+
+    }
+
+    hr {
+
+        border: none;
+
+        border-top: 1px solid #ddd;
+
+        margin: 30px 0;
+
+    }
+
+    /* 検索結果 */
+
+    h2 {
+
+        margin-bottom: 20px;
+
+        color: #34495e;
+
+        border-bottom: 2px solid #2980b9;
+
+        padding-bottom: 6px;
+
+        font-weight: 600;
+
+    }
+
+    .note-block {
+
+        margin-bottom: 40px;
+
+    }
+
+    .note-block > p {
+
+        font-weight: 600;
+
+        margin-bottom: 12px;
+
+        color: #2c3e50;
+
+        font-size: 16px;
+
+    }
+
+    /* 画像一覧をグリッド表示 */
+
+    .images-grid {
+
+        display: grid;
+
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+
+        gap: 16px;
+
+    }
+
+    .image-wrapper {
+
+        text-align: center;
+
+        background-color: white;
+
+        border-radius: 10px;
+
+        box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+
+        padding: 12px 8px 16px;
+
+        transition: box-shadow 0.3s ease;
+
+    }
+
+    .image-wrapper:hover {
+
+        box-shadow: 0 8px 18px rgba(0,0,0,0.18);
+
+    }
+
+    .image-wrapper img {
+
+        max-width: 100%;
+
+        max-height: 180px;
+
+        border-radius: 8px;
+
+        object-fit: cover;
+
+        margin-bottom: 10px;
+
+        cursor: pointer;
+
+        transition: transform 0.3s ease;
+
+    }
+
+    .image-wrapper img:hover {
+
+        transform: scale(1.05);
+
+        box-shadow: 0 6px 14px rgba(0,0,0,0.25);
+
+    }
+
+    .download-btn {
+
+        display: inline-block;
+
+        padding: 7px 18px;
+
+        font-size: 14px;
+
+        background-color: #2980b9;
+
+        color: white;
+
+        border-radius: 6px;
+
+        text-decoration: none;
+
+        box-shadow: 0 3px 7px rgba(41, 128, 185, 0.5);
+
+        border: none;
+
+        cursor: pointer;
+
+        transition: background-color 0.3s ease;
+
+    }
+
+    .download-btn:hover {
+
+        background-color: #1c5d8a;
+
+    }
+
+    /* メッセージ */
+
+    p.no-results {
+
+        font-size: 16px;
+
+        text-align: center;
+
+        color: #999;
+
+        margin-top: 40px;
+
+    }
+
+    /* ページネーション */
+
+    nav.pagination ul {
+
+        list-style: none;
+
+        display: flex;
+
+        justify-content: center;
+
+        gap: 8px;
+
+        padding: 0;
+
+        margin: 30px 0;
+
+    }
+
+    nav.pagination ul li {
+
+        padding: 6px 12px;
+
+        border: 1px solid #2980b9;
+
+        border-radius: 4px;
+
+    }
+
+    nav.pagination ul li strong {
+
+        font-weight: bold;
+
+        color: #2980b9;
+
+    }
+
+    nav.pagination ul li a {
+
+        text-decoration: none;
+
+        color: #2980b9;
+
+    }
+
+    nav.pagination ul li a:hover {
+
+        text-decoration: underline;
+
+    }
+
+    nav.pagination ul li.disabled {
+
+        color: #ccc;
+
+        border-color: #ccc;
+
+        cursor: default;
+
+    }
+
     </style>
+
 </head>
+
 <body>
+
+
 
     <h1>画像検索</h1>
 
+
+
     <form method="get" action="{% url 'search' %}">
+
         <input type="text" name="q" placeholder="検索ワード" value="{{ query }}">
 
+
+
         <label>
+
             <input type="radio" name="mode" value="title" {% if mode == 'title' %}checked{% endif %}>
+
             タイトルで検索
-        </label>
-        <label>
-            <input type="radio" name="mode" value="tag" {% if mode == 'tag' %}checked{% endif %}>
-            タグで検索
+
         </label>
 
+        <label>
+
+            <input type="radio" name="mode" value="tag" {% if mode == 'tag' %}checked{% endif %}>
+
+            タグで検索
+
+        </label>
+
+
+
         <button type="submit">検索</button>
+
     </form>
+
+
 
     <hr>
 
+
+
     {% if results %}
+
     <h2>画像一覧（{{ results|length }}件）</h2>
 
+
+
     {% for note in results %}
+
     <div class="note-block">
+
         <p><strong>{{ note.filename }}</strong></p>
+
         <div class="images-grid">
+
             {% for img_url in note.image_urls %}
+
             <div class="image-wrapper">
+
                 <img src="{{ img_url }}" alt="画像">
+
                 <button type="button" class="download-btn" onclick="forceDownload('{{ img_url }}', '{{ img_url|slice:'-20:' }}')">ダウンロード</button>
+
             </div>
+
             {% endfor %}
+
         </div>
+
     </div>
+
     {% empty %}
+
     <p class="no-results">画像がありません。</p>
+
     {% endfor %}
 
+
+
+    <!-- ページネーション -->
+
+    {% if results.has_other_pages %}
+<nav class="pagination">
+  <ul>
+    {% if results.has_previous %}
+      <li><a href="?q={{ query }}&mode={{ mode }}&page={{ results.previous_page_number }}">前へ</a></li>
     {% else %}
-        {% if query %}
-        <p class="no-results">該当する画像はありません。</p>
-        {% endif %}
+      <li class="disabled">前へ</li>
     {% endif %}
 
-<script>
-  // ダウンロードリンククリック時にJSで強制ダウンロードさせる関数
-  function forceDownload(url, filename) {
-    fetch(url)
-      .then(resp => resp.blob())
-      .then(blob => {
-        const blobUrl = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = blobUrl;
-        a.download = filename || 'download';
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-        window.URL.revokeObjectURL(blobUrl);
-      })
-      .catch(() => alert('ダウンロードに失敗しました'));
-  }
-</script>
+    {# 最初のページを表示 #}
+    {% if 1 == results.number %}
+      <li><strong>1</strong></li>
+    {% else %}
+      <li><a href="?q={{ query }}&mode={{ mode }}&page=1">1</a></li>
+    {% endif %}
 
-</body>
-</html>
+    {# 現在ページが4ページ以上なら「…」を表示 #}
+    {% if results.number > 4 %}
+      <li>…</li>
+    {% endif %}
+
+    {# 現在ページの前2ページから後2ページまで表示 #}
+    {% for num in results.paginator.page_range %}
+      {% if num > 1 and num < results.paginator.num_pages %}
+        {% if num >= results.number|add:'-2' and num <= results.number|add:'2' %}
+          {% if num == results.number %}
+            <li><strong>{{ num }}</strong></li>
+          {% else %}
+            <li><a href="?q={{ query }}&mode={{ mode }}&page={{ num }}">{{ num }}</a></li>
+          {% endif %}
+        {% endif %}
+      {% endif %}
+    {% endfor %}
+
+    {# 現在ページが総ページ数の3つ前より小さい場合「…」を表示 #}
+    {% if results.number < results.paginator.num_pages|add:'-3' %}
+      <li>…</li>
+    {% endif %}
+
+    {# 最後のページを表示 #}
+    {% if results.paginator.num_pages > 1 %}
+      {% if results.number == results.paginator.num_pages %}
+        <li><strong>{{ results.paginator.num_pages }}</strong></li>
+      {% else %}
+        <li><a href="?q={{ query }}&mode={{ mode }}&page={{ results.paginator.num_pages }}">{{ results.paginator.num_pages }}</a></li>
+      {% endif %}
+    {% endif %}
+
+    {% if results.has_next %}
+      <li><a href="?q={{ query }}&mode={{ mode }}&page={{ results.next_page_number }}">次へ</a></li>
+    {% else %}
+      <li class="disabled">次へ</li>
+    {% endif %}
+  </ul>
+</nav>
+{% endif %}
+
+
+
+
+    {% else %}
+
+    {% if query %}
+
+    <p class="no-results">該当する画像はありません。</p>
+
+    {% endif %}
+
+    {% endif %}
+
+
+
+    <script>
+
+  // ダウンロードリンククリック時にJSで強制ダウンロードさせる関数
+
+    function forceDownload(url, filename) {
+
+        fetch(url)
+
+        .then(resp => resp.blob())
+
+        .then(blob => {
+
+            const blobUrl = window.URL.createObjectURL(blob);
+
+            const a = document.createElement('a');
+
+            a.href = blobUrl;
+
+            a.download = filename || 'download';
+
+            document.body.appendChild(a);
+
+            a.click();
+
+            a.remove();
+
+            window.URL.revokeObjectURL(blobUrl);
+
+        })
+
+        .catch(() => alert('ダウンロードに失敗しました'));
+
+    }
+
+    </script>
+
+
+
+    </body>
+
+    </html>

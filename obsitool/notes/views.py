@@ -1,5 +1,7 @@
 from django.shortcuts import render
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .models import ObsiNote
+
 
 def search_view(request):
     query = request.GET.get('q', '').strip()
@@ -7,7 +9,6 @@ def search_view(request):
     results = []
 
     if query:
-        # 入力を空白区切りで複数ワードに分割（大文字小文字無視）
         query_terms = [term.strip().lower() for term in query.split() if term.strip()]
 
         if mode == 'title':
@@ -24,8 +25,20 @@ def search_view(request):
                 )
             ]
 
+    # ページネーション設定
+    page = request.GET.get('page', 1)
+    paginator = Paginator(results, 10)  # 1ページあたり10件表示
+
+    try:
+        paginated_results = paginator.page(page)
+    except PageNotAnInteger:
+        paginated_results = paginator.page(1)
+    except EmptyPage:
+        paginated_results = paginator.page(paginator.num_pages)
+
     return render(request, 'notes/search.html', {
-        'results': results,
+        'results': paginated_results,
         'query': query,
         'mode': mode,
+        'paginator': paginator,
     })
