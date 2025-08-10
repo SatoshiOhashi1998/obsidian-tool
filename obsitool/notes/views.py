@@ -7,12 +7,22 @@ def search_view(request):
     results = []
 
     if query:
+        # 入力を空白区切りで複数ワードに分割（大文字小文字無視）
+        query_terms = [term.strip().lower() for term in query.split() if term.strip()]
+
         if mode == 'title':
-            results = ObsiNote.objects.filter(filename__icontains=query)
+            results = ObsiNote.objects.all()
+            for term in query_terms:
+                results = results.filter(filename__icontains=term)
+
         elif mode == 'tag':
-            # DBから全部取得 → Pythonで完全一致フィルタ
-            all_notes = ObsiNote.objects.all()
-            results = [note for note in all_notes if query in note.tags]
+            results = [
+                note for note in ObsiNote.objects.all()
+                if isinstance(note.tags, list) and all(
+                    any(term in tag.lower() for tag in note.tags)
+                    for term in query_terms
+                )
+            ]
 
     return render(request, 'notes/search.html', {
         'results': results,
