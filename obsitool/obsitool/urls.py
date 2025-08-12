@@ -25,5 +25,6 @@ router.register(r'notes', ObsiNoteViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('notes/', include('notes.urls')),
     path('api/', include(router.urls)),
 ]

@@ -1,4 +1,6 @@
 # notes/views.py
+from django.core.paginator import Paginator
+from django.shortcuts import render
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -44,3 +46,35 @@ class ObsiNoteViewSet(viewsets.ModelViewSet):
         # ページング不要なら通常レスポンス
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
+
+def search_view(request):
+    query = request.GET.get('q', '').strip()
+    mode = request.GET.get('mode', 'title')
+    page_number = request.GET.get('page', 1)
+
+    notes = ObsiNote.objects.all()
+
+    if query:
+        query_terms = [term.strip().lower() for term in query.split() if term.strip()]
+        if mode == 'title':
+            for term in query_terms:
+                notes = notes.filter(filename__icontains=term)
+        elif mode == 'tag':
+            filtered_notes = []
+            for note in notes:
+                if isinstance(note.tags, list) and all(
+                    any(term in tag.lower() for tag in note.tags) for term in query_terms
+                ):
+                    filtered_notes.append(note)
+            notes = filtered_notes
+
+    # ページネーション（1ページあたり10件と仮定）
+    paginator = Paginator(notes, 10)
+    page_obj = paginator.get_page(page_number)
+
+    context = {
+        'query': query,
+        'mode': mode,
+        'results': page_obj,
+    }
+    return render(request, 'notes/search.html', context)
