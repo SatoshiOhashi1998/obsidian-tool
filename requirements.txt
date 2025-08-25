@@ -1,0 +1,9 @@
+asgiref==3.9.1
+Django==5.2.4
+django-cors-headers==4.7.0
+djangorestframework==3.16.1
+-e git+https://github.com/SatoshiOhashi1998/myutils.git@ddb267a00b7670c0f124d248d52bb20496a2c4da#egg=myutils
+pygame==2.6.1
+PyYAML==6.0.2
+sqlparse==0.5.3
+tzdata==2025.2
