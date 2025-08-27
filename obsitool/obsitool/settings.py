@@ -9,10 +9,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # -----------------------------
 # Security
 # -----------------------------
-SECRET_KEY = os.getenv("SECRET_KEY", "insecure-secret-key")  # Docker環境で必ず設定する
+SECRET_KEY = os.getenv("SECRET_KEY", "insecure-secret-key")
+
 DEBUG = os.getenv("DEBUG", "False") == "True"
 
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "*").split(",")
+# 本番はドメイン名やサーバーIPを必ず指定
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "127.0.0.1,localhost").split(",")
 
 # -----------------------------
 # Applications
@@ -60,15 +62,15 @@ TEMPLATES = [
 WSGI_APPLICATION = 'obsitool.wsgi.application'
 
 # -----------------------------
-# Database (PostgreSQL for Docker)
+# Database (PostgreSQL on Ubuntu)
 # -----------------------------
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv("POSTGRES_DB", "postgres"),
-        'USER': os.getenv("POSTGRES_USER", "postgres"),
-        'PASSWORD': os.getenv("POSTGRES_PASSWORD", "postgres"),
-        'HOST': os.getenv("POSTGRES_HOST", "db"),  # docker-compose のサービス名
+        'NAME': os.getenv("POSTGRES_DB", "mydb"),
+        'USER': os.getenv("POSTGRES_USER", "myuser"),
+        'PASSWORD': os.getenv("POSTGRES_PASSWORD", "mypassword"),
+        'HOST': os.getenv("POSTGRES_HOST", "localhost"),  # Dockerなし → localhost
         'PORT': os.getenv("POSTGRES_PORT", "5432"),
     }
 }
@@ -87,14 +89,16 @@ AUTH_PASSWORD_VALIDATORS = [
 # CORS
 # -----------------------------
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
+    "http://localhost:3000",  # フロントエンド（React等）と連携する場合
 ]
 
 # -----------------------------
 # Internationalization
 # -----------------------------
-LANGUAGE_CODE = 'en-us'
-TIME_ZONE = 'UTC'
+LANGUAGE_CODE = 'ja'
+
+TIME_ZONE = 'Asia/Tokyo'
+
 USE_I18N = True
 USE_TZ = True
 
