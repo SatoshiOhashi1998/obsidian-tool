@@ -13,7 +13,6 @@ SECRET_KEY = os.getenv("SECRET_KEY", "insecure-secret-key")
 
 DEBUG = os.getenv("DEBUG", "False") == "True"
 
-# 本番はドメイン名やサーバーIPを必ず指定
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "127.0.0.1,localhost").split(",")
 
 # -----------------------------
@@ -32,7 +31,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',  # 一番上
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -47,7 +46,7 @@ ROOT_URLCONF = 'obsitool.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / "templates"],  # 必要に応じて追加
+        'DIRS': [BASE_DIR / "templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -62,16 +61,12 @@ TEMPLATES = [
 WSGI_APPLICATION = 'obsitool.wsgi.application'
 
 # -----------------------------
-# Database (PostgreSQL on Ubuntu)
+# Database (SQLite, default)
 # -----------------------------
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv("POSTGRES_DB", "mydb"),
-        'USER': os.getenv("POSTGRES_USER", "myuser"),
-        'PASSWORD': os.getenv("POSTGRES_PASSWORD", "mypassword"),
-        'HOST': os.getenv("POSTGRES_HOST", "localhost"),  # Dockerなし → localhost
-        'PORT': os.getenv("POSTGRES_PORT", "5432"),
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / "db.sqlite3",
     }
 }
 
